@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace DO
 {
-    class Order
+    public class Order
     {
-        public int Key { get; private set; }
-        public int HostingUnitKey { get; private set; }
-        public int GuestRequestKey { get; private set; }
-        public Order_Status Status { get; private set; }
-        public DateTime OrderDate { get; private set; }
-        public DateTime SentDate { get; private set; }
-        public DateTime CloseDate { get; private set; }
+        public int Key { get;  set; }
+        public int HostingUnitKey { get;  set; }
+        public int GuestRequestKey { get;  set; }
+        public Order_Status Status { get;  set; }
+        public DateTime OrderDate { get;  set; }
+        public DateTime SentDate { get;  set; }
+        public DateTime CloseDate { get;  set; }
         public override string ToString()
         {
             return base.ToString();

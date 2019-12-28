@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace DO
 {
-    class Host
+    public class Host
     {
-        public int Id { get; private set; }
-        public int BranchNumber { get; private set; }
-        public int BankNumber { get; private set; }
-        public int BankAccuontNumber { get; private set; }
-        public bool CollectionClearance { get; private set; }
+        public int Id { get; set; }
+        public int BranchNumber { get; set; }
+        public int BankNumber { get; set; }
+        public int BankAccuontNumber { get; set; }
+        public bool CollectionClearance { get; set; }
         public override string ToString()
         {
             return base.ToString();

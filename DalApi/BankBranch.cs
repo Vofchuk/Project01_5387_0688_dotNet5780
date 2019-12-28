@@ -8,12 +8,12 @@ namespace DO
 {
     public class BankBranch
     {
-        public int BankNumber { get; private set; }
-        public string BankName { get; private set; }
-        public int BranchNumber { get; private set; }
-        public string BranchAddress { get; private set; }
-        public string BranchCity { get; private set; }
-        public int BankAccountNumber { get; private set; }
+        public int BankNumber { get; set; }
+        public string BankName { get; set; }
+        public int BranchNumber { get; set; }
+        public string BranchAddress { get; set; }
+        public string BranchCity { get; set; }
+        public int BankAccountNumber { get; set; }
         public override string ToString()
         {
             return base.ToString();

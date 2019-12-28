@@ -48,7 +48,7 @@
     <Compile Include="GuestRequest.cs" />
     <Compile Include="Host.cs" />
     <Compile Include="HostingUnit.cs" />
-    <Compile Include="Interface1.cs" />
+    <Compile Include="IDal.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

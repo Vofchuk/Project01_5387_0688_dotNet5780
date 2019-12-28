@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace DO
 {
-    class HostingUnit
+    public class HostingUnit
     {
-        public int Key { get; private set; }
+        public int Key { get; set; }
 
-        public HostingUnit Owner { get; private set; }
+        public int Owner { get; set; }
 
-        public string HostingUnitName { get; private set; }
+        public string HostingUnitName { get; set; }
 
-        public bool[,] Diary { get; private set; }
+        public bool[,] Diary { get; set; }
 
         public override string ToString()
 
