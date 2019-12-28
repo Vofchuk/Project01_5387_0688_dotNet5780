@@ -7,7 +7,7 @@ using DO;
 
 namespace DalApi
 {
-    interface IDal<T>
+   public interface IDal<T>
     {
         //bool RecievePerson(Person person);
         //bool AddPerson(Person person);

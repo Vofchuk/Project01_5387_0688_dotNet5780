@@ -116,7 +116,6 @@ namespace DS
                     SentDate = new DateTime(2019, 12, 25),
                     CloseDate = new DateTime (2020, 1,1)               }
             };
-
         }
     }
 }
