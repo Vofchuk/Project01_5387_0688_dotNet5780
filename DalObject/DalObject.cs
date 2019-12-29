@@ -10,58 +10,91 @@ using System.Reflection;
 
 namespace DalObject
 {
-    public class DalObject <T> : IDal<T>
+    public class DalObject : IDal
     {
-        public bool Add(T t)
-        {
-            T temp = t.Clone(); 
-            switch (temp.GetType().Name)
-            {
-                case "Person":
-                    {
-                        Person p = temp as Person;
-                        DataSource.persons.Add(p);
-                        break;
-                    }
-                case "Host":
-                    {
-                        Host h = temp as Host;
-                        DataSource.hosts.Add(h);
-                        break;
-                    }
-                case "Order":
-                    {
-                        Person p = temp as Person;
-                        DataSource.persons.Add(p);
-                        break;
-                    }
-            }
-            return true;
-        }
-
-        public bool Delete(T t)
+        bool IDal.AddGuset(GuestRequest request)
         {
             throw new NotImplementedException();
         }
 
-        public bool Recieve(T t)
+        bool IDal.AddHosst(Host host)
         {
             throw new NotImplementedException();
         }
 
-        public bool RecieveList(T t, Predicate<bool> predicate)
+        bool IDal.AddOrder(Order order)
         {
             throw new NotImplementedException();
         }
 
-        public bool StatusUpdate(T t)
+        bool IDal.AddPerson(Person person)
         {
             throw new NotImplementedException();
         }
 
-        public bool Update(T t)
+        bool IDal.DeleteHost(Host host)
         {
             throw new NotImplementedException();
         }
+
+        bool IDal.DeletePerson(Person person)
+        {
+            throw new NotImplementedException();
+        }
+
+        List<GuestRequest> IDal.guestRequestsList()
+        {
+            throw new NotImplementedException();
+        }
+        bool IDal.GusetRequestStatus(GuestRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
+        List<HostingUnit> IDal.hostingUnitsList(Predicate<bool> predicate)
+        {
+            throw new NotImplementedException();
+        }
+
+        List<Order> IDal.ordersList(Predicate<bool> predicate)
+        {
+            throw new NotImplementedException();
+        }
+
+        GuestRequest IDal.RecieveGuset(GuestRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
+        Host IDal.RecieveHost(Host host)
+        {
+            throw new NotImplementedException();
+        }
+
+        Order IDal.RecieveOrder(Order order)
+        {
+            throw new NotImplementedException();
+        }
+
+        Person IDal.RecievePerson(Person person)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool IDal.UpdateGuset(GuestRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool IDal.UpdateHost(Host host)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool IDal.UpdateOrder(Order order)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }
