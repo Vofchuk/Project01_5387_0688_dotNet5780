@@ -10,12 +10,12 @@ namespace DS
 {
     static public class DataSource
     {
-        static List<Person> persons;
-        static List<Host> hosts;
-        static List<HostingUnit> hostingUnits;
-        static List<Order> orders;
-        static List<GuestRequest> guestRequests;
-        static List<BankBranch> bankBranches;
+        public static List<Person> persons;
+        public static List<Host> hosts;
+        public static List<HostingUnit> hostingUnits;
+        public static List<Order> orders;
+        public static List<GuestRequest> guestRequests;
+        public static List<BankBranch> bankBranches;
         static DataSource()
         {
             persons = new List<Person>()
@@ -116,6 +116,7 @@ namespace DS
                     SentDate = new DateTime(2019, 12, 25),
                     CloseDate = new DateTime (2020, 1,1)               }
             };
+    
         }
     }
 }

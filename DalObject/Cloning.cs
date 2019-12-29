@@ -5,7 +5,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dal
+namespace DalObject
+
 {
     static class Cloning
     {
@@ -15,21 +16,24 @@ namespace Dal
             PropertyInfo[] propertyInfo = original.GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
             foreach (PropertyInfo property in propertyInfo)
             {
-                //לבדוק בהרצה שתנאי מתקיים עבור ENUM
-                if (property.PropertyType.IsValueType||property.PropertyType.Equals(typeof(string)))
+                if (property.CanWrite)
                 {
-                    property.SetValue(target, property.GetValue(original, null), null);
-                }
-                else
-                {
-                    T temp = (T)property.GetValue(original, null);
-                    if(temp == null)
+                    //לבדוק בהרצה שתנאי מתקיים עבור ENUM
+                    if (property.PropertyType.IsValueType || property.PropertyType.Equals(typeof(string)))
                     {
-                        property.SetValue(target, null, null);
+                        property.SetValue(target, property.GetValue(original, null), null);
                     }
                     else
                     {
-                        property.SetValue(target, temp.Clone(), null);
+                        T temp = (T)property.GetValue(original, null);
+                        if (temp == null)
+                        {
+                            property.SetValue(target, null, null);
+                        }
+                        else
+                        {
+                            property.SetValue(target, temp.Clone(), null);
+                        }
                     }
                 }
             }

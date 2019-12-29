@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DalApi;
+using DS;
+using DO;
+using System.Reflection;
 
 namespace DalObject
 {
@@ -11,7 +14,29 @@ namespace DalObject
     {
         public bool Add(T t)
         {
-            throw new NotImplementedException();
+            T temp = t.Clone(); 
+            switch (temp.GetType().Name)
+            {
+                case "Person":
+                    {
+                        Person p = temp as Person;
+                        DataSource.persons.Add(p);
+                        break;
+                    }
+                case "Host":
+                    {
+                        Host h = temp as Host;
+                        DataSource.hosts.Add(h);
+                        break;
+                    }
+                case "Order":
+                    {
+                        Person p = temp as Person;
+                        DataSource.persons.Add(p);
+                        break;
+                    }
+            }
+            return true;
         }
 
         public bool Delete(T t)
