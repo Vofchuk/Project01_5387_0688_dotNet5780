@@ -20,8 +20,8 @@ namespace DalObject
         {
             bool exist = DataSource.hosts.Any(x => host.Id == x.Id);
             if (!exist)
-                // throw new DuplicateIdException("GuestRequest", request.GuestRequestKey);
-                DataSource.hosts.Add(host.Clone());
+                throw new DuplicateIdException("Host", host.Id);
+            DataSource.hosts.Add(host.Clone());
             return exist;
         }//
 
@@ -29,25 +29,25 @@ namespace DalObject
         {
             bool exist = DataSource.persons.Any(x => x.Id == person.Id);
             if (exist)
-                // throw new DuplicateIdException("GuestRequest", request.GuestRequestKey);
-                DataSource.persons.Add(person.Clone());
+                throw new DuplicateIdException("Person", person.Id);
+            DataSource.persons.Add(person.Clone());
             return exist;
         }
         int IDal.AddGusetRequest(GuestRequest request)// 
         {
-               request.GuestRequestKey = Configuration.GuestRequestKey++;
+            request.GuestRequestKey = Configuration.GuestRequestKey++;
             bool exist = DataSource.guestRequests.Any(x => request.GuestRequestKey == x.GuestRequestKey);
             if (!exist)
-                // throw new DuplicateIdException("GuestRequest", request.GuestRequestKey);
-                DataSource.guestRequests.Add(request.Clone());
+                throw new DuplicateIdException("GuestRequest", request.GuestRequestKey);
+            DataSource.guestRequests.Add(request.Clone());
             return request.GuestRequestKey;
         }//
         int IDal.AddHostingUnit(HostingUnit hostingUnit)//
         {
             bool exist = DataSource.hostingUnits.Any(x => hostingUnit.Key == x.Key);
             if (!exist)
-                // throw new DuplicateIdException("GuestRequest", request.GuestRequestKey);
-                DataSource.hostingUnits.Add(hostingUnit.Clone());
+                throw new DuplicateIdException("HostingUnit", hostingUnit.Key);
+            DataSource.hostingUnits.Add(hostingUnit.Clone());
             return hostingUnit.Key;
         }
 
@@ -55,9 +55,9 @@ namespace DalObject
         {
             bool exist = DataSource.orders.Any(x => order.Key == x.Key);
             if (!exist)
-                // throw new DuplicateIdException("GuestRequest", request.GuestRequestKey);
-                DataSource.orders.Add(order.Clone());
-            return order.GuestRequestKey;
+                throw new DuplicateIdException("Order", order.Key);
+            DataSource.orders.Add(order.Clone());
+            return order.Key;
         }
         void IDal.DeleteHost(Host host)//
         {
@@ -91,45 +91,49 @@ namespace DalObject
         }
         List<GuestRequest> IDal.guestRequestsList()
         {
-            throw new NotImplementedException();
+            var temp = from item in DataSource.guestRequests
+                       select item.Clone();
+            return temp.ToList();
         }
 
-
-        List<HostingUnit> IDal.hostingUnitsList(Predicate<bool> predicate)
+        List<HostingUnit> IDal.hostingUnitsList(Func<HostingUnit,bool> predicate)
         {
-            throw new NotImplementedException();
+            return DataSource.hostingUnits.Where(predicate).Select(HU=> (HostingUnit)HU.Clone()).ToList();
         }
 
-        List<Order> IDal.ordersList(Predicate<bool> predicate)
+        List<Order> IDal.ordersList(Func<Order, bool> predicate)
         {
-            throw new NotImplementedException();
+            return DataSource.orders.Where(predicate).Select(o => (Order)o.Clone()).ToList();
         }
 
         GuestRequest IDal.RecieveGusetRequest(int key)
         {
             GuestRequest GR = DataSource.guestRequests.FirstOrDefault(x => x.GuestRequestKey == key);
-            return GR == null ? null : GR.Clone();
+            return GR == null ? throw new MissingIdException("GuestRequest", key) : GR.Clone();
         }
 
         Host IDal.RecieveHost(int key)
         {
             Host h = DataSource.hosts.FirstOrDefault(x => x.Id == key);
-            return h == null ? null : h.Clone();
+            return h == null ? throw new MissingIdException("Host", key) : h.Clone();
         }
 
-        HostingUnit IDal.RecieveHostingUnit(HostingUnit hostingUnit)
+        HostingUnit IDal.RecieveHostingUnit(int key)
         {
-            throw new NotImplementedException();
+            HostingUnit HU = DataSource.hostingUnits.FirstOrDefault(x => x.Key == key);
+            return HU == null ? throw new MissingIdException("HostingUnit", key) : HU.Clone();
         }
 
-        Order IDal.RecieveOrder(Order order)
+        Order IDal.RecieveOrder(int key)
         {
-            throw new NotImplementedException();
+            Order o = DataSource.orders.FirstOrDefault(x => x.Key == key);
+            return o == null ? throw new MissingIdException("Order", key) : o.Clone();
         }
 
-        Person IDal.RecievePerson(Person person)
+        Person IDal.RecievePerson(int id)
         {
-            throw new NotImplementedException();
+            Person p = DataSource.persons.FirstOrDefault(x => x.Id == id);
+            return p == null ? throw new MissingIdException("Order", id) : p.Clone();
         }
 
         bool IDal.UpdateGusetRequest(GuestRequest request)

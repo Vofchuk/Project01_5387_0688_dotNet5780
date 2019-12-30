@@ -44,6 +44,8 @@
     <Compile Include="Cloning.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="DalObject.cs" />
+    <Compile Include="DuplicateIdException.cs" />
+    <Compile Include="MissingIdException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

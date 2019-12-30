@@ -6,11 +6,11 @@ namespace DalApi
 {
     public interface IDal
     {
-        HostingUnit RecieveHostingUnit(HostingUnit hostingUnit);
+        HostingUnit RecieveHostingUnit(int key);
         int AddHostingUnit(HostingUnit hostingUnit);
         bool UpdateHostingUnit(HostingUnit hostingUnit);
         void DeleteHostingUnit(HostingUnit hostingUnit);
-        Person RecievePerson(Person person);
+        Person RecievePerson(int key);
         bool AddPerson(Person person);
         bool DeletePerson(Person person);
         GuestRequest RecieveGusetRequest(int key);
@@ -21,12 +21,12 @@ namespace DalApi
         bool AddHost(Host host);
         void DeleteHost(Host host);
         bool UpdateHost(Host host);
-        Order RecieveOrder(Order order);
+        Order RecieveOrder(int key);
         int AddOrder(Order order);
         bool UpdateOrder(Order order);
-        List<HostingUnit> hostingUnitsList(Predicate<bool> predicate);
+        List<HostingUnit> hostingUnitsList(Func<HostingUnit, bool> predicate);
         List<GuestRequest> guestRequestsList();
-        List<Order> ordersList(Predicate<bool> predicate);
+        List<Order> ordersList(Func<Order, bool> predicate);
         //bool Recieve(T t);
         //bool Add(T t);
         //bool Update(T t);
