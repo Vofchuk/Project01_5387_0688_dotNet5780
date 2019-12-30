@@ -24,7 +24,7 @@ namespace DS
                 {
                     Id = 123,
                     IdType = ID.ID,
-                    Status = Person_Status.ACTIVE,
+                    Status = Status.ACTIVE,
                     Password = 1111,
                     FirstName = "dan",
                     LastName = "ziber",
@@ -35,7 +35,7 @@ namespace DS
                 {
                     Id = 122898,
                     IdType = ID.PASSPORT,
-                    Status = Person_Status.ACTIVE,
+                    Status = Status.ACTIVE,
                     Password = 199111,
                     FirstName = "ophir",
                     LastName = "Jaguar",

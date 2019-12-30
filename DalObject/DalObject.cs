@@ -33,8 +33,9 @@ namespace DalObject
                 DataSource.persons.Add(person.Clone());
             return exist;
         }
-        int IDal.AddGusetRequest(GuestRequest request)//
+        int IDal.AddGusetRequest(GuestRequest request)// 
         {
+               request.GuestRequestKey = Configuration.GuestRequestKey++;
             bool exist = DataSource.guestRequests.Any(x => request.GuestRequestKey == x.GuestRequestKey);
             if (!exist)
                 // throw new DuplicateIdException("GuestRequest", request.GuestRequestKey);
