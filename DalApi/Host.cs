@@ -13,6 +13,7 @@ namespace DO
         public int BankNumber { get; set; }
         public int BankAccuontNumber { get; set; }
         public bool CollectionClearance { get; set; }
+        public Status Status { get; set; }
         public override string ToString()
         {
             return base.ToString();

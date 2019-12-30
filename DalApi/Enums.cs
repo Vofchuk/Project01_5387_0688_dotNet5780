@@ -10,9 +10,9 @@ namespace DO
     {
         ID, PASSPORT, DRIVER_LICENSE
     }
-  public enum Person_Status
+  public enum Status
     {
-        ACTIVE, INACTIVED
+        ACTIVE, INACTIVE
     }
     public enum Hosting_Type
     {

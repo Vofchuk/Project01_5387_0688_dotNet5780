@@ -23,6 +23,7 @@ namespace DalObject
                     {
                         property.SetValue(target, property.GetValue(original, null), null);
                     }
+                    //if is refernce type or complex types 
                     else
                     {
                         T temp = (T)property.GetValue(original, null);

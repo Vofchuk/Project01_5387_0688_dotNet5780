@@ -10,7 +10,7 @@ namespace DO
     {
         public int Id { get; set; }
         public ID IdType { get;  set; }
-        public Person_Status Status { get;  set; }
+        public Status Status { get; set; }
         public int Password { get;  set; }
         public string FirstName { get;  set; }
         public string LastName { get;  set; }
