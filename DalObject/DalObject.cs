@@ -16,7 +16,7 @@ namespace DalObject
         static DalObject() { }
         DalObject() { }
         public static DalObject Instance { get { return instance; } }
-        bool IDal.AddHost(Host host)
+        bool IDal.AddHost(Host host)//
         {
             bool exist = DataSource.hosts.Any(x => host.Id == x.Id);
             if (!exist)
@@ -25,11 +25,10 @@ namespace DalObject
             return exist;
         }//
 
-        bool IDal.AddPerson(Person person)
+        bool IDal.AddPerson(Person person)//
         {
-            if (!(Check(from item in DataSource.persons
-                      where item.Id == person.Id
-                      select item),person.Id))
+            bool exist = DataSource.persons.Any(x => x.Id == person.Id);
+            if (exist)
                 // throw new DuplicateIdException("GuestRequest", request.GuestRequestKey);
                 DataSource.persons.Add(person.Clone());
             return exist;
@@ -63,7 +62,7 @@ namespace DalObject
         {
             int count = DataSource.hosts.RemoveAll(x => host.Id == x.Id);
             if (count == 0)
-               throw new MissingIdException("Host",host.Id);
+                throw new MissingIdException("Host", host.Id);
             host.Status = Status.INACTIVE;
             DataSource.hosts.Add(host.Clone());
         }
@@ -85,15 +84,15 @@ namespace DalObject
             return true;
         }
 
+        bool IDal.GusetRequestStatus(GuestRequest request)
+        {
+            throw new NotImplementedException();
+        }
         List<GuestRequest> IDal.guestRequestsList()
         {
             throw new NotImplementedException();
         }
 
-        bool IDal.GusetRequestStatus(GuestRequest request)
-        {
-            throw new NotImplementedException();
-        }
 
         List<HostingUnit> IDal.hostingUnitsList(Predicate<bool> predicate)
         {
@@ -105,14 +104,16 @@ namespace DalObject
             throw new NotImplementedException();
         }
 
-        GuestRequest IDal.RecieveGusetRequest(GuestRequest request)
+        GuestRequest IDal.RecieveGusetRequest(int key)
         {
-            throw new NotImplementedException();
+            GuestRequest GR = DataSource.guestRequests.FirstOrDefault(x => x.GuestRequestKey == key);
+            return GR == null ? null : GR.Clone();
         }
 
-        Host IDal.RecieveHost(Host host)
+        Host IDal.RecieveHost(int key)
         {
-            throw new NotImplementedException();
+            Host h = DataSource.hosts.FirstOrDefault(x => x.Id == key);
+            return h == null ? null : h.Clone();
         }
 
         HostingUnit IDal.RecieveHostingUnit(HostingUnit hostingUnit)
@@ -149,16 +150,5 @@ namespace DalObject
         {
             throw new NotImplementedException();
         }
-    }
-    bool check (object obj)
-    {
-        Type n = typeof(DataSource);
-        PropertyInfo[] propertyInfos = n.GetProperties(BindingFlags.Public | BindingFlags.Static);
-        
-        from
-        {
-
-        }
-
     }
 }
