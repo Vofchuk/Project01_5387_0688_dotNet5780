@@ -13,30 +13,28 @@ namespace DalObject
         internal static T Clone <T> (this T original)
         {
             T target = (T)Activator.CreateInstance(original.GetType());
-            PropertyInfo[] propertyInfo = original.GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-            foreach (PropertyInfo property in propertyInfo)
+            var Infos = original.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            foreach (var info in Infos)
             {
-                if (property.CanWrite)
-                {
                     //לבדוק בהרצה שתנאי מתקיים עבור ENUM
-                    if (property.PropertyType.IsValueType || property.PropertyType.Equals(typeof(string)))
+                    if (info.FieldType.IsValueType || info.FieldType.Equals(typeof(string)))
                     {
-                        property.SetValue(target, property.GetValue(original, null), null);
+                        info.SetValue(target, info.GetValue(original));
                     }
                     //if is refernce type or complex types 
                     else
                     {
-                        T temp = (T)property.GetValue(original, null);
+                        T temp = (T)info.GetValue(original);
                         if (temp == null)
                         {
-                            property.SetValue(target, null, null);
+                            info.SetValue(target, null);
                         }
                         else
                         {
-                            property.SetValue(target, temp.Clone(), null);
+                            info.SetValue(target, temp.Clone());
                         }
                     }
-                }
+               
             }
             return target;
         }
