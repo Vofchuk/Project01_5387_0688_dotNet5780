@@ -95,14 +95,50 @@ namespace DS
             {
                 new BankBranch()
                 {
-                    BankAccountNumber = 12315646,
                     BankName= "BOA",
                     BankNumber= 12,
                     BranchAddress = "11213 Brooklyn NY",
                     BranchCity = "NYC baby",
                     BranchNumber= 770
 
-                }
+                },
+                 new BankBranch()
+                {
+                    BankName= "BOA",
+                    BankNumber= 12,
+                    BranchAddress = "11213 crown",
+                    BranchCity = "atlanta",
+                    BranchNumber= 999
+
+                },
+                  new BankBranch()
+                {
+                    BankName= "BOA",
+                    BankNumber= 12,
+                    BranchAddress = "11213 hollywood",
+                    BranchCity = "los angels",
+                    BranchNumber= 396
+
+                },
+                   new BankBranch()
+                {
+                    BankName= "BOA",
+                    BankNumber= 12,
+                    BranchAddress = "167 miami beach",
+                    BranchCity = "miami",
+                    BranchNumber= 543
+
+                },
+                    new BankBranch()
+                {
+                    BankName= "BOA",
+                    BankNumber= 12,
+                    BranchAddress = "768 vhj",
+                    BranchCity = "boston",
+                    BranchNumber= 770
+
+                },
+
             };
             orders = new List<Order>()
             {
@@ -116,7 +152,7 @@ namespace DS
                     SentDate = new DateTime(2019, 12, 25),
                     CloseDate = new DateTime (2020, 1,1)               }
             };
-    
+
         }
     }
 }

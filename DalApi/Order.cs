@@ -15,6 +15,7 @@ namespace DO
         public DateTime OrderDate { get;  set; }
         public DateTime SentDate { get;  set; }
         public DateTime CloseDate { get;  set; }
+        
         public override string ToString()
         {
             return base.ToString();
