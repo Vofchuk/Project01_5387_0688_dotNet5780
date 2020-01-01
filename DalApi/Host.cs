@@ -15,8 +15,6 @@ namespace DO
         public int BankAccuontNumber { get; set; }
         public bool CollectionClearance { get; set; }
         public Status Status { get; set; }
-        public List<int> MyRequests { get; private set; }
-
         public override string ToString()
         {
             return base.ToString();

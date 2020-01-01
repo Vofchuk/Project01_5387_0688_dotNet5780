@@ -36,7 +36,18 @@ namespace BL
 
         public bool DisableCollectionClearence(Host host)
         {
-            throw new NotImplementedException();
+            var list = from GuestRequest in dal.guestRequestsList()
+                       let key = GuestRequest.HostingUnitKey
+                       from HostingUnit in dal.hostingUnitsList(x => x.Owner == host.Id)
+                       where key==HostingUnit.Key 
+                       select GuestRequest;
+            foreach(var item in list)
+            {
+                if (item.Status == DO.Request_Statut.OPEN)
+                    return false;
+            }
+            return true;
+
         }
 
         public bool EmailPremissionCheck(Host host)

@@ -9,6 +9,7 @@ namespace DO
     public  class GuestRequest
     {
         public int GuestRequestKey { get; set; }
+        public int HostingUnitKey { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string MailAddress { get; set; }
