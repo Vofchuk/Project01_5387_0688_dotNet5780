@@ -14,7 +14,7 @@ namespace BlApi
         bool EmailPremissionCheck(Host host);
         bool IsAvailableGuestRequest(GuestRequest guestRequest);
         void OrderClosed(Order order);
-        void CalculateCommision(Order order);
+        int CalculateCommision(Order order);
         void MarkDates(Order order);
         void UpadateUserStatus(Order order);
         bool DeleteableHostingUnit(HostingUnit hostingUnit);

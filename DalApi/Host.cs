@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,23 @@ namespace DO
         public int BankAccuontNumber { get; set; }
         public bool CollectionClearance { get; set; }
         public Status Status { get; set; }
+        List<int> myRequests = new List<int>();
+        public int MyRequests
+        {
+
+            set
+            {
+                myRequests.Add(value);
+            }
+        }
+        public List<int> MyRequests
+        {
+
+            get
+            {
+               return myRequests;
+            }
+        }
         public override string ToString()
         {
             return base.ToString();

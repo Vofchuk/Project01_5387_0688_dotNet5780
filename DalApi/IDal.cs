@@ -14,7 +14,7 @@ namespace DalApi
         bool AddPerson(Person person);
         bool DeletePerson(Person person);
         GuestRequest RecieveGuesetRequest(int key);
-        int AddGusetRequest(GuestRequest request);
+        int AddGuesetRequest(GuestRequest request);
         void UpdateGusetRequest(GuestRequest request);
        void UpdateGusetRequestStatus(GuestRequest request);
         Host RecieveHost(int key);
@@ -28,6 +28,7 @@ namespace DalApi
         List<GuestRequest> guestRequestsList();
         List<Order> ordersList(Func<Order, bool> predicate);
         List<BankBranch> GetBankBranchesList();
+        int GetCommission(); 
         //bool Recieve(T t);
         //bool Add(T t);
         //bool Update(T t);

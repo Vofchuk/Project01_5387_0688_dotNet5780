@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DalApi;
+using DO;
 
 namespace Dal
 {
-    static class Configuration
+     public static class Configuration
     {
-        public static int HostingUnitKey = 10000000;
+        public static int HostingUnitKey = 1000000;
         public static int GuestRequestKey = 20000000;
         public static int OrderKey = 30000000;
         public static int TotalHostingUnit = 0;

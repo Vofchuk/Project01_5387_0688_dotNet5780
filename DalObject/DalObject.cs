@@ -35,7 +35,7 @@ namespace Dal
             DataSource.persons.Add(person.Clone());
             return exist;
         }
-        int IDal.AddGusetRequest(GuestRequest request)// 
+        int IDal.AddGuesetRequest(GuestRequest request)// 
         {
             bool exist = DataSource.guestRequests.Any(x => request.GuestRequestKey == x.GuestRequestKey);
             if (exist)
@@ -185,6 +185,10 @@ namespace Dal
             //var list = from item in DataSource.bankBranches
             //           select item.Clone();
             //return list.ToList();
+        }
+        int IDal.GetCommission()
+        {
+            return Configuration.Commission;
         }
 
     }

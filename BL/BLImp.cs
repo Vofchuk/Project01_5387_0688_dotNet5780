@@ -7,20 +7,21 @@ using BlApi;
 using DO;
 
 
+
 namespace BL
 {
     class BLImp : IBl
     {
         readonly DalApi.IDal dal = DalApi.DalFactory.GetDal();
-        public void CalculateCommision(Order order)
+        public int CalculateCommision(Order order)
         {
             GuestRequest guestRequest = dal.RecieveGuesetRequest(order.GuestRequestKey);
-            int numberOfDays = PassedDays(guestRequest.EntryDate, guestRequest.ReleaseDate);
+            return dal.GetCommission()*PassedDays(guestRequest.EntryDate, guestRequest.ReleaseDate);
         }
 
         public bool CheckDate(GuestRequest guestRequest)
         {
-            return guestRequest.ReleaseDate > guestRequest.EntryDate;
+            return guestRequest.ReleaseDate>guestRequest.EntryDate;
         }
 
         public List<HostingUnit> CheckForAvailableHostingUnit(DateTime date, int days)
@@ -40,7 +41,7 @@ namespace BL
 
         public bool EmailPremissionCheck(Host host)
         {
-            throw new NotImplementedException();
+            return host.CollectionClearance;
         }
 
         public List<GuestRequest> GroupedByNumberOfGuests(int number)
@@ -70,7 +71,15 @@ namespace BL
 
         public void MarkDates(Order order)
         {
-            throw new NotImplementedException();
+            GuestRequest guestRequest = dal.RecieveGuesetRequest(order.GuestRequestKey);
+            HostingUnit hostingUnit = dal.RecieveHostingUnit(order.HostingUnitKey);
+            DateTime  temp = guestRequest.EntryDate;
+            //now we mark this days in true 
+            while (DateTime.Compare(temp.AddDays(1), guestRequest.ReleaseDate) != 0)
+            {
+                hostingUnit[temp] = true;
+                temp = temp.AddDays(1);
+            }
         }
 
         public List<GuestRequest> MatchingRequirment(Func<GuestRequest, bool> predicate)

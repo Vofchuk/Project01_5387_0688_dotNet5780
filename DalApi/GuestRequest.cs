@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DO
 {
-    public class GuestRequest
+    public  class GuestRequest
     {
         public int GuestRequestKey { get; set; }
         public string FirstName { get; set; }

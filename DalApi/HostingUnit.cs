@@ -16,7 +16,18 @@ namespace DO
 
         public bool[,] Diary { get; set; }
         public Status Status { get; set; }
-       
+        public bool this[DateTime date]
+        {
+            get
+            {
+                return Diary[date.Month - 1, date.Day - 1];
+            }
+            set
+            {
+                Diary[date.Month - 1, date.Day - 1] = value;
+            }
+        }
+
         public override string ToString()
 
         {
