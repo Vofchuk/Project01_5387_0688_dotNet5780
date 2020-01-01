@@ -34,7 +34,6 @@ namespace DalObject
                             info.SetValue(target, temp.Clone());
                         }
                     }
-               
             }
             return target;
         }

@@ -9,6 +9,7 @@ namespace BlApi
 {
    public interface IBl
     {
+        
         bool CheckDate(GuestRequest guestRequest);
         bool EmailPremissionCheck(Host host);
         bool IsAvailableGuestRequest(GuestRequest guestRequest);
@@ -16,11 +17,9 @@ namespace BlApi
         void CalculateCommision(Order order);
         void MarkDates(Order order);
         void UpadateUserStatus(Order order);
-
-
-
-
-
-
+        bool DeleteableHostingUnit(HostingUnit hostingUnit);
+        bool DisableCollectionClearence(Host host);
+        void SendEmail(GuestRequest guestRequest); 
+        
     }
 }

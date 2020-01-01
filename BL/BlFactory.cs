@@ -8,6 +8,6 @@ namespace BlApi
 {
     public class BlFactory
     {
-        
+        0
     }
 }
