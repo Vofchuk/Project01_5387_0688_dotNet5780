@@ -40,7 +40,7 @@ namespace BL
                        let key = GuestRequest.HostingUnitKey
                        from HostingUnit in dal.hostingUnitsList(x => x.Owner == host.Id)
                        where key==HostingUnit.Key 
-                       select GuestRequest;
+                       select new { GuestRequest.Status };
             foreach(var item in list)
             {
                 if (item.Status == DO.Request_Statut.OPEN)
