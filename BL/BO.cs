@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlApi
+namespace BO
 {
-    public class BlFactory
+    class BO
     {
-        
+       
     }
 }

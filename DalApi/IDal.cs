@@ -13,7 +13,7 @@ namespace DalApi
         Person RecievePerson(int key);
         bool AddPerson(Person person);
         bool DeletePerson(Person person);
-        GuestRequest RecieveGusetRequest(int key);
+        GuestRequest RecieveGuesetRequest(int key);
         int AddGusetRequest(GuestRequest request);
         void UpdateGusetRequest(GuestRequest request);
        void UpdateGusetRequestStatus(GuestRequest request);

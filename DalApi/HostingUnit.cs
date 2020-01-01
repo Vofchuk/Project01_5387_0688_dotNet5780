@@ -16,8 +16,7 @@ namespace DO
 
         public bool[,] Diary { get; set; }
         public Status Status { get; set; }
-
-
+       
         public override string ToString()
 
         {

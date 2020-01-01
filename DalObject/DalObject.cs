@@ -8,7 +8,7 @@ using DS;
 using DO;
 using System.Reflection;
 
-namespace DalObject
+namespace Dal
 {
     sealed class DalObject : IDal
     {
@@ -115,7 +115,7 @@ namespace DalObject
             return DataSource.orders.Where(predicate).Select(o => (Order)o.Clone()).ToList();
         }
 
-        GuestRequest IDal.RecieveGusetRequest(int key)//
+        GuestRequest IDal.RecieveGuesetRequest(int key)//
         {
             GuestRequest GR = DataSource.guestRequests.FirstOrDefault(x => x.GuestRequestKey == key);
             return GR == null ? throw new MissingIdException("GuestRequest", key) : GR.Clone();
