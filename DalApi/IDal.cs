@@ -25,7 +25,7 @@ namespace DalApi
         int AddOrder(Order order);
         void UpdateOrder(Order order);
         List<HostingUnit> hostingUnitsList(Func<HostingUnit, bool> predicate);
-        List<GuestRequest> guestRequestsList();
+        List<GuestRequest> GuestRequestsList();
         List<Order> ordersList(Func<Order, bool> predicate);
         List<BankBranch> GetBankBranchesList();
         int GetCommission(); 

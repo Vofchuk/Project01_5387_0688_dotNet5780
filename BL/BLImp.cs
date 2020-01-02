@@ -36,18 +36,17 @@ namespace BL
 
         public bool DisableCollectionClearence(Host host)
         {
-            var list = from GuestRequest in dal.guestRequestsList()
-                       let key = GuestRequest.HostingUnitKey
-                       from HostingUnit in dal.hostingUnitsList(x => x.Owner == host.Id)
-                       where key==HostingUnit.Key 
+            var list = from GuestRequest in dal.GuestRequestsList()
+                       let GuestRequestKey = GuestRequest.GuestRequestKey
+                       from key in dal.RecieveHost(host.Id).GuestRequestsKeys
+                       where key==GuestRequestKey
                        select new { Status=GuestRequest.Status };
             foreach(var item in list)
             {
-                if (item.Status == DO.Request_Statut.OPEN)
+                if (item.Status == Request_Statut.OPEN)
                     return false;
             }
             return true;
-
         }
 
         public bool EmailPremissionCheck(Host host)

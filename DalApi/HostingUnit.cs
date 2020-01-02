@@ -27,7 +27,6 @@ namespace DO
                 Diary[date.Month - 1, date.Day - 1] = value;
             }
         }
-
         public override string ToString()
 
         {

@@ -100,7 +100,7 @@ namespace Dal
                 throw new MissingIdException("GuestRequest", request.GuestRequestKey);
             DataSource.guestRequests.Add(request.Clone());
         }
-        List<GuestRequest> IDal.guestRequestsList()//
+        List<GuestRequest> IDal.GuestRequestsList()//
         {
             var temp = from item in DataSource.guestRequests
                        select item.Clone();
