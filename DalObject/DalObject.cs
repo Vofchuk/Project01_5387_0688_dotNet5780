@@ -171,7 +171,6 @@ namespace Dal
                 throw new MissingIdException("HostingUnit", hostingUnit.Key);
             DataSource.hostingUnits.Add(hostingUnit.Clone());
         }
-
         void IDal.UpdateOrder(Order order)
         {
             int count = DataSource.orders.RemoveAll(x => x.Key == order.Key);
@@ -179,17 +178,15 @@ namespace Dal
                 throw new MissingIdException("Host", order.Key);
             DataSource.orders.Add(order.Clone());
         }
-        List<BankBranch> IDal.GetBankBranchesList()
-        {
-            return DataSource.bankBranches.Clone();
-            //var list = from item in DataSource.bankBranches
-            //           select item.Clone();
-            //return list.ToList();
+        IEnumerable<BankBranch> IDal.GetBankBranchesList()
+        { 
+            var list = from item in DataSource.bankBranches
+                      select item.Clone();
+            return list;
         }
         int IDal.GetCommission()
         {
             return Configuration.Commission;
         }
-
     }
 }

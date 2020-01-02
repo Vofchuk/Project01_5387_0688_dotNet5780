@@ -36,14 +36,13 @@ namespace BL
 
         public bool DisableCollectionClearence(Host host)
         {
-            var list = from GuestRequest in dal.GuestRequestsList()
-                       let GuestRequestKey = GuestRequest.GuestRequestKey
-                       from key in dal.RecieveHost(host.Id).GuestRequestsKeys
-                       where key==GuestRequestKey
-                       select new { Status=GuestRequest.Status };
+            var list = from HostingUnit in dal.hostingUnitsList(x=> x.Owner==host.Id)
+                       let HostingUnitKey = HostingUnit.Key
+                       from order in dal.ordersList(x=> x.HostingUnitKey==HostingUnitKey)
+                       select new { Status= order.Status };
             foreach(var item in list)
             {
-                if (item.Status == Request_Statut.OPEN)
+                if (item.Status != Order_Status.CLIENT_CLOSED&&item.Status!=Order_Status.IGNORED_CLOSED)
                     return false;
             }
             return true;
