@@ -193,16 +193,7 @@ namespace Dal
             return temp == null ? throw new MissingIdException("Order", order.Key) : temp.Commission;
 
         }
-        //public  void Add (object obj, string type)
-        //{
-        //    switch (type)
-        //    {
-        //        case "Host":
-        //            Host host = obj as Host;
-        //            break;
-        //        default:
-        //            break;
-        //    }
-        //}
+        
+        
     }
 }
