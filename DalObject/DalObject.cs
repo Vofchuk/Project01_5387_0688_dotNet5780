@@ -100,19 +100,19 @@ namespace Dal
                 throw new MissingIdException("GuestRequest", request.GuestRequestKey);
             DataSource.guestRequests.Add(request.Clone());
         }
-        List<GuestRequest> IDal.GuestRequestsList()//
+        IEnumerable<GuestRequest> IDal.GuestRequestsList()//
         {
             var temp = from item in DataSource.guestRequests
                        select item.Clone();
-            return temp.ToList();
+            return temp;
         }
-        List<HostingUnit> IDal.hostingUnitsList(Func<HostingUnit,bool> predicate)//
+        IEnumerable<HostingUnit> IDal.hostingUnitsList(Func<HostingUnit,bool> predicate)//
         {
-            return DataSource.hostingUnits.Where(predicate).Select(HU=> (HostingUnit)HU.Clone()).ToList();
+            return DataSource.hostingUnits.Where(predicate).Select(HU=> (HostingUnit)HU.Clone());
         }
-        List<Order> IDal.ordersList(Func<Order, bool> predicate)//
+        IEnumerable<Order> IDal.ordersList(Func<Order, bool> predicate)//
         {
-            return DataSource.orders.Where(predicate).Select(o => (Order)o.Clone()).ToList();
+            return DataSource.orders.Where(predicate).Select(o => (Order)o.Clone());
         }
 
         GuestRequest IDal.RecieveGuesetRequest(int key)//

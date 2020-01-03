@@ -24,9 +24,9 @@ namespace DalApi
         Order RecieveOrder(int key);
         int AddOrder(Order order);
         void UpdateOrder(Order order);
-        List<HostingUnit> hostingUnitsList(Func<HostingUnit, bool> predicate);
-        List<GuestRequest> GuestRequestsList();
-        List<Order> ordersList(Func<Order, bool> predicate);
+        IEnumerable<HostingUnit> hostingUnitsList(Func<HostingUnit, bool> predicate);
+        IEnumerable<GuestRequest> GuestRequestsList();
+        IEnumerable<Order> ordersList(Func<Order, bool> predicate);
         IEnumerable<BankBranch> GetBankBranchesList();
         int GetCommission(); 
         //bool Recieve(T t);
