@@ -13,13 +13,16 @@ namespace BL
     class BLImp : IBl
     {
         readonly DalApi.IDal dal = DalApi.DalFactory.GetDal();
-        public int CalculateCommision(Order order)
+        public int CalculateCommision(Order order)//
         {
             GuestRequest guestRequest = dal.RecieveGuesetRequest(order.GuestRequestKey);
-            return dal.GetCommission()*PassedDays(guestRequest.EntryDate, guestRequest.ReleaseDate);
+           int commision = dal.GetCommissionRate() * PassedDays(guestRequest.EntryDate, guestRequest.ReleaseDate);
+            order.Commission = commision;
+            dal.UpdateOrder(order);
+            return commision;
         }
 
-        public bool CheckDate(GuestRequest guestRequest)
+        public bool CheckDate(GuestRequest guestRequest)//
         {
             return guestRequest.ReleaseDate>guestRequest.EntryDate;
         }
@@ -36,17 +39,11 @@ namespace BL
 
         public bool DisableCollectionClearence(Host host)
         {
-            var list = from HostingUnit in dal.hostingUnitsList(x=> x.Owner==host.Id)
-                       let HostingUnitKey = HostingUnit.Key
-                       from order in dal.ordersList(x=> x.HostingUnitKey==HostingUnitKey)
-                       select new { Status= order.Status };
-            foreach(var item in list)
-            {
-                if (item.Status != Order_Status.CLIENT_CLOSED&&item.Status!=Order_Status.IGNORED_CLOSED)
-                    return false;
-            }
-            return true;
+            var orders = dal.ordersList(x => x.HostID == host.Id);
+            bool flag = orders.Any(x => x.Status != Order_Status.CLIENT_CLOSED && x.Status != Order_Status.IGNORED_CLOSED);
+            return !flag;
         }
+           
 
         public bool EmailPremissionCheck(Host host)
         {
@@ -89,6 +86,9 @@ namespace BL
                 hostingUnit[temp] = true;
                 temp = temp.AddDays(1);
             }
+            guestRequest.Status = Request_Statut.ORDERED;
+            dal.UpdateGusetRequestStatus(guestRequest);
+            
         }
 
         public List<GuestRequest> MatchingRequirment(Func<GuestRequest, bool> predicate)

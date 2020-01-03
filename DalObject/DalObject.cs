@@ -16,7 +16,7 @@ namespace Dal
         static DalObject() { }
         DalObject() { }
         public static DalObject Instance { get { return instance; } }
-        bool IDal.AddHost(Host host)//
+        public bool AddHost(Host host)//
         {
             bool exist = DataSource.hosts.Any(x => host.Id == x.Id);
             if (exist)
@@ -26,7 +26,7 @@ namespace Dal
             return exist;
         }//
 
-        bool IDal.AddPerson(Person person)//
+        public bool AddPerson(Person person)//
         {
             bool exist = DataSource.persons.Any(x => x.Id == person.Id);
             if (exist)
@@ -35,7 +35,7 @@ namespace Dal
             DataSource.persons.Add(person.Clone());
             return exist;
         }
-        int IDal.AddGuesetRequest(GuestRequest request)// 
+        public int AddGuesetRequest(GuestRequest request)// 
         {
             bool exist = DataSource.guestRequests.Any(x => request.GuestRequestKey == x.GuestRequestKey);
             if (exist)
@@ -45,7 +45,7 @@ namespace Dal
             DataSource.guestRequests.Add(request.Clone());
             return request.GuestRequestKey;
         }//
-        int IDal.AddHostingUnit(HostingUnit hostingUnit)//
+        public int AddHostingUnit(HostingUnit hostingUnit)//
         {
             bool exist = DataSource.hostingUnits.Any(x => hostingUnit.Key == x.Key);
             if (exist)
@@ -56,7 +56,7 @@ namespace Dal
             return hostingUnit.Key;
         }
 
-        int IDal.AddOrder(Order order)//
+        public int AddOrder(Order order)//
         {
             bool exist = DataSource.orders.Any(x => order.Key == x.Key);
             if (exist)
@@ -66,7 +66,7 @@ namespace Dal
             DataSource.orders.Add(order.Clone());
             return order.Key;
         }
-        void IDal.DeleteHost(Host host)//
+        public void DeleteHost(Host host)//
         {
             int count = DataSource.hosts.RemoveAll(x => host.Id == x.Id);
             if (count == 0)
@@ -75,7 +75,7 @@ namespace Dal
             DataSource.hosts.Add(host.Clone());
         }
 
-        void IDal.DeleteHostingUnit(HostingUnit hostingUnit)//
+        public void DeleteHostingUnit(HostingUnit hostingUnit)//
         {
             int count = DataSource.hostingUnits.RemoveAll(x => hostingUnit.Key == x.Key);
             if (count == 0)
@@ -84,7 +84,7 @@ namespace Dal
             DataSource.hostingUnits.Add(hostingUnit.Clone());
         }
 
-        bool IDal.DeletePerson(Person person)//
+        public bool DeletePerson(Person person)//
         {
             int count = DataSource.persons.RemoveAll(x => person.Id == x.Id);
             if (count == 0)
@@ -93,70 +93,69 @@ namespace Dal
             return true;
         }
 
-        void IDal.UpdateGusetRequestStatus(GuestRequest request)//
+        public void UpdateGusetRequestStatus(GuestRequest request)//
         {
-          int count =  DataSource.guestRequests.RemoveAll(x => x.GuestRequestKey == request.GuestRequestKey);
-            if (count == 0)
-                throw new MissingIdException("GuestRequest", request.GuestRequestKey);
-            DataSource.guestRequests.Add(request.Clone());
+            UpdateGusetRequest(request);
+            //int count = DataSource.guestRequests.RemoveAll(x => x.GuestRequestKey == request.GuestRequestKey);
+            //if (count == 0)
+            //    throw new MissingIdException("GuestRequest", request.GuestRequestKey);
+            //DataSource.guestRequests.Add(request.Clone());
         }
-        IEnumerable<GuestRequest> IDal.GuestRequestsList()//
+        public IEnumerable<GuestRequest> GuestRequestsList()//
         {
             var temp = from item in DataSource.guestRequests
                        select item.Clone();
             return temp;
         }
-        IEnumerable<HostingUnit> IDal.hostingUnitsList(Func<HostingUnit,bool> predicate)//
+        public IEnumerable<HostingUnit> hostingUnitsList(Func<HostingUnit, bool> predicate)//
         {
-            return DataSource.hostingUnits.Where(predicate).Select(HU=> (HostingUnit)HU.Clone());
+            return DataSource.hostingUnits.Where(predicate).Select(HU => (HostingUnit)HU.Clone());
         }
-        IEnumerable<Order> IDal.ordersList(Func<Order, bool> predicate)//
+        public IEnumerable<Order> ordersList(Func<Order, bool> predicate)//
         {
             return DataSource.orders.Where(predicate).Select(o => (Order)o.Clone());
         }
 
-        GuestRequest IDal.RecieveGuesetRequest(int key)//
+        public GuestRequest RecieveGuesetRequest(int key)//
         {
             GuestRequest GR = DataSource.guestRequests.FirstOrDefault(x => x.GuestRequestKey == key);
             return GR == null ? throw new MissingIdException("GuestRequest", key) : GR.Clone();
         }
 
-        Host IDal.RecieveHost(int key)//
+        public Host RecieveHost(int key)//
         {
             Host h = DataSource.hosts.FirstOrDefault(x => x.Id == key);
             return h == null ? throw new MissingIdException("Host", key) : h.Clone();
         }
 
-        HostingUnit IDal.RecieveHostingUnit(int key)//
+        public HostingUnit RecieveHostingUnit(int key)//
         {
             HostingUnit HU = DataSource.hostingUnits.FirstOrDefault(x => x.Key == key);
             return HU == null ? throw new MissingIdException("HostingUnit", key) : HU.Clone();
         }
 
-        Order IDal.RecieveOrder(int key)//
+        public Order RecieveOrder(int key)//
         {
             Order o = DataSource.orders.FirstOrDefault(x => x.Key == key);
             return o == null ? throw new MissingIdException("Order", key) : o.Clone();
         }
 
-        Person IDal.RecievePerson(int id)//
+        public Person RecievePerson(int id)//
         {
             Person p = DataSource.persons.FirstOrDefault(x => x.Id == id);
             return p == null ? throw new MissingIdException("Order", id) : p.Clone();
         }
 
-        void IDal.UpdateGusetRequest(GuestRequest request)
+        public void UpdateGusetRequest(GuestRequest request)
         {
-        if (true)
-            {
-                int count = DataSource.guestRequests.RemoveAll(x => x.GuestRequestKey == request.GuestRequestKey);
-                if (count == 0)
-                    throw new MissingIdException("GuestRequest", request.GuestRequestKey);
-                DataSource.guestRequests.Add(request.Clone());
-            }
+
+            int count = DataSource.guestRequests.RemoveAll(x => x.GuestRequestKey == request.GuestRequestKey);
+            if (count == 0)
+                throw new MissingIdException("GuestRequest", request.GuestRequestKey);
+            DataSource.guestRequests.Add(request.Clone());
         }
 
-       void IDal.UpdateHost(Host host)
+        public void UpdateHost(Host host)
         {
             int count = DataSource.hosts.RemoveAll(x => x.Id == host.Id);
             if (count == 0)
@@ -164,29 +163,46 @@ namespace Dal
             DataSource.hosts.Add(host.Clone());
         }
 
-        void IDal.UpdateHostingUnit(HostingUnit hostingUnit)
+        public void UpdateHostingUnit(HostingUnit hostingUnit)
         {
             int count = DataSource.hostingUnits.RemoveAll(x => x.Key == hostingUnit.Key);
             if (count == 0)
                 throw new MissingIdException("HostingUnit", hostingUnit.Key);
             DataSource.hostingUnits.Add(hostingUnit.Clone());
         }
-        void IDal.UpdateOrder(Order order)
+        public void UpdateOrder(Order order)
         {
             int count = DataSource.orders.RemoveAll(x => x.Key == order.Key);
             if (count == 0)
                 throw new MissingIdException("Host", order.Key);
             DataSource.orders.Add(order.Clone());
         }
-        IEnumerable<BankBranch> IDal.GetBankBranchesList()
-        { 
+        public IEnumerable<BankBranch> GetBankBranchesList()
+        {
             var list = from item in DataSource.bankBranches
-                      select item.Clone();
+                       select item.Clone();
             return list;
         }
-        int IDal.GetCommission()
+        public int GetCommissionRate()
         {
             return Configuration.Commission;
         }
+        public int GetCommission(Order order)
+        {
+            var temp = DataSource.orders.FirstOrDefault(x => x.Key == order.Key);
+            return temp == null ? throw new MissingIdException("Order", order.Key) : temp.Commission;
+
+        }
+        //public  void Add (object obj, string type)
+        //{
+        //    switch (type)
+        //    {
+        //        case "Host":
+        //            Host host = obj as Host;
+        //            break;
+        //        default:
+        //            break;
+        //    }
+        //}
     }
 }

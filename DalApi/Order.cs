@@ -10,12 +10,14 @@ namespace DO
     {
         public int Key { get;  set; }
         public int HostingUnitKey { get;  set; }
+        public int HostID { get; set; }
         public int GuestRequestKey { get;  set; }
         public Order_Status Status { get;  set; }
         public DateTime OrderDate { get;  set; }
         public DateTime SentDate { get;  set; }
         public DateTime CloseDate { get;  set; }
-        
+        public int Commission { get; set; }
+
         public override string ToString()
         {
             return base.ToString();

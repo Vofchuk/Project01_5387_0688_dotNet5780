@@ -28,7 +28,8 @@ namespace DalApi
         IEnumerable<GuestRequest> GuestRequestsList();
         IEnumerable<Order> ordersList(Func<Order, bool> predicate);
         IEnumerable<BankBranch> GetBankBranchesList();
-        int GetCommission(); 
+        int GetCommissionRate();
+        int GetCommission(Order order);
         //bool Recieve(T t);
         //bool Add(T t);
         //bool Update(T t);
