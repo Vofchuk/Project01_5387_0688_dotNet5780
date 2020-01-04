@@ -96,10 +96,6 @@ namespace Dal
         public void UpdateGusetRequestStatus(GuestRequest request)//
         {
             UpdateGusetRequest(request);
-            //int count = DataSource.guestRequests.RemoveAll(x => x.GuestRequestKey == request.GuestRequestKey);
-            //if (count == 0)
-            //    throw new MissingIdException("GuestRequest", request.GuestRequestKey);
-            //DataSource.guestRequests.Add(request.Clone());
         }
         public IEnumerable<GuestRequest> GuestRequestsList()//
         {
@@ -193,7 +189,5 @@ namespace Dal
             return temp == null ? throw new MissingIdException("Order", order.Key) : temp.Commission;
 
         }
-        
-        
     }
 }

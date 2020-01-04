@@ -9,6 +9,7 @@ namespace DO
 {
     public class Host
     {
+        public int TotalCommission { set; get;}
         public int Id { get; set; }
         public int BranchNumber { get; set; }
         public int BankNumber { get; set; }

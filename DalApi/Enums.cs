@@ -24,7 +24,7 @@ namespace DO
     };
     public enum Order_Status
     {
-       APPROVED, PENDING, EMAIL_SENT, IGNORED_CLOSED, CLIENT_CLOSED
+       APPROVED, PENDING, EMAIL_SENT, IGNORED_CLOSED, CLIENT_CLOSED,  IRRELEVANT
     };
     public enum Request_Statut
     {

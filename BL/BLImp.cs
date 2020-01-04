@@ -16,36 +16,70 @@ namespace BL
         public int CalculateCommision(Order order)//
         {
             GuestRequest guestRequest = dal.RecieveGuesetRequest(order.GuestRequestKey);
-           int commision = dal.GetCommissionRate() * PassedDays(guestRequest.EntryDate, guestRequest.ReleaseDate);
+            int commision = dal.GetCommissionRate() * PassedDays(guestRequest.EntryDate, guestRequest.ReleaseDate);
             order.Commission = commision;
             dal.UpdateOrder(order);
+            Host host = dal.RecieveHost(order.HostID);
+            host.TotalCommission += commision;
+            dal.UpdateHost(host);
             return commision;
         }
 
         public bool CheckDate(GuestRequest guestRequest)//
         {
-            return guestRequest.ReleaseDate>guestRequest.EntryDate;
+            return guestRequest.ReleaseDate > guestRequest.EntryDate;
         }
 
-        public List<HostingUnit> CheckForAvailableHostingUnit(DateTime date, int days)
+        public IEnumerable<HostingUnit> CheckForAvailableHostingUnit(DateTime date, int days)//
         {
-            throw new NotImplementedException();
-        }
+            DateTime end = date.AddDays(days);
+            GuestRequest temp = new GuestRequest() { EntryDate = date, ReleaseDate = end };
 
+            var hostingUnit = from item in dal.hostingUnitsList(x => true)
+                             where IsAvailableGuestRequest(temp, item)
+                             select item;
+            return hostingUnit;
+        }
+       public bool IsOpenOrder(Order order)//
+        {
+
+            return order.Status != Order_Status.CLIENT_CLOSED && order.Status != Order_Status.IGNORED_CLOSED && order.Status != Order_Status.IRRELEVANT;
+
+        }
+        /// <summary>
+        ///  in this function we take all the orders that connected in to this hosting unit
+        ///  and  check if  there any open order to this hosting unit  
+        /// </summary>
+        /// <param name="hostingUnit"></param>
+        /// <returns></returns>
         public bool DeleteableHostingUnit(HostingUnit hostingUnit)
         {
-            throw new NotImplementedException();
+            var orders = from item in dal.ordersList(x => x.HostingUnitKey == hostingUnit.Key)
+                         where IsOpenOrder(item)
+                         select item;
+            return !orders.Any();//check if there is somthing in the orders
         }
-
-        public bool DisableCollectionClearence(Host host)
+        public void CloseIrrelevantOrders(Order order)
+        {
+            var orders = from item in dal.ordersList(x => x.Key != order.Key)
+                         where item.GuestRequestKey == order.GuestRequestKey ||
+                         item.HostingUnitKey == order.HostingUnitKey && IsAvailableGuestRequest(dal.RecieveGuesetRequest(item.Key), dal.RecieveHostingUnit(item.HostingUnitKey))
+                         select item;
+            foreach (var item in orders)
+            {
+                item.Status = Order_Status.IRRELEVANT;
+                dal.UpdateOrder(item);
+            }
+        }
+        public bool DisableCollectionClearence(Host host)//
         {
             var orders = dal.ordersList(x => x.HostID == host.Id);
-            bool flag = orders.Any(x => x.Status != Order_Status.CLIENT_CLOSED && x.Status != Order_Status.IGNORED_CLOSED);
+            bool flag = orders.Any(x => IsOpenOrder(x));
             return !flag;
         }
-           
 
-        public bool EmailPremissionCheck(Host host)
+
+        public bool EmailPremissionCheck(Host host)//
         {
             return host.CollectionClearance;
         }
@@ -70,16 +104,23 @@ namespace BL
             throw new NotImplementedException();
         }
 
-        public bool IsAvailableGuestRequest(GuestRequest guestRequest)
+        public bool IsAvailableGuestRequest(GuestRequest guestRequest, HostingUnit hostingUnit)
         {
-            throw new NotImplementedException();
+            DateTime temp = guestRequest.EntryDate;
+            while (temp != guestRequest.ReleaseDate)
+            {
+                if (hostingUnit[temp] == true)
+                    return false;
+                temp = temp.AddDays(1);
+            }
+            return true;
         }
 
         public void MarkDates(Order order)
         {
             GuestRequest guestRequest = dal.RecieveGuesetRequest(order.GuestRequestKey);
             HostingUnit hostingUnit = dal.RecieveHostingUnit(order.HostingUnitKey);
-            DateTime  temp = guestRequest.EntryDate;
+            DateTime temp = guestRequest.EntryDate;
             //now we mark this days in true 
             while (DateTime.Compare(temp.AddDays(1), guestRequest.ReleaseDate) != 0)
             {
@@ -88,7 +129,7 @@ namespace BL
             }
             guestRequest.Status = Request_Statut.ORDERED;
             dal.UpdateGusetRequestStatus(guestRequest);
-            
+            CloseIrrelevantOrders(order);
         }
 
         public List<GuestRequest> MatchingRequirment(Func<GuestRequest, bool> predicate)
@@ -117,9 +158,9 @@ namespace BL
             throw new NotImplementedException();
         }
 
-        public int PassedDays(DateTime first, DateTime second = default)
+        public int PassedDays(DateTime first, DateTime second = default)//
         {
-           
+
             int count = 0;
             if (second == default(DateTime))
             {
@@ -128,7 +169,7 @@ namespace BL
             for (int i = 1; first.AddDays(i) <= second; ++i)
                 count++;
             return count;
-               
+
         }
 
         public void SendEmail(GuestRequest guestRequest)
