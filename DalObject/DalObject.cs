@@ -25,7 +25,6 @@ namespace Dal
             DataSource.hosts.Add(host.Clone());
             return exist;
         }//
-
         public bool AddPerson(Person person)//
         {
             bool exist = DataSource.persons.Any(x => x.Id == person.Id);
@@ -55,7 +54,6 @@ namespace Dal
             DataSource.hostingUnits.Add(hostingUnit.Clone());
             return hostingUnit.Key;
         }
-
         public int AddOrder(Order order)//
         {
             bool exist = DataSource.orders.Any(x => order.Key == x.Key);
@@ -74,7 +72,6 @@ namespace Dal
             host.Status = Status.INACTIVE;
             DataSource.hosts.Add(host.Clone());
         }
-
         public void DeleteHostingUnit(HostingUnit hostingUnit)//
         {
             int count = DataSource.hostingUnits.RemoveAll(x => hostingUnit.Key == x.Key);
@@ -83,7 +80,6 @@ namespace Dal
             hostingUnit.Status = Status.INACTIVE;
             DataSource.hostingUnits.Add(hostingUnit.Clone());
         }
-
         public bool DeletePerson(Person person)//
         {
             int count = DataSource.persons.RemoveAll(x => person.Id == x.Id);
@@ -92,7 +88,6 @@ namespace Dal
             Configuration.TotalPersons -= count;
             return true;
         }
-
         public void UpdateGusetRequestStatus(GuestRequest request)//
         {
             UpdateGusetRequest(request);
@@ -145,9 +140,10 @@ namespace Dal
         public void UpdateGusetRequest(GuestRequest request)
         {
 
-            int count = DataSource.guestRequests.RemoveAll(x => x.GuestRequestKey == request.GuestRequestKey);
-            if (count == 0)
+            bool exist = DataSource.orders.Any(x => x.GuestRequestKey == request.GuestRequestKey);
+            if (exist)
                 throw new MissingIdException("GuestRequest", request.GuestRequestKey);
+            DataSource.guestRequests.RemoveAll(x => x.GuestRequestKey == request.GuestRequestKey);
             DataSource.guestRequests.Add(request.Clone());
         }
 
