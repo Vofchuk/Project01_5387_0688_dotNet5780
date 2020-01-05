@@ -12,12 +12,13 @@ namespace BL
 {
     sealed class  BLImp : IBl
     {
-        readonly DalApi.IDal dal = DalApi.DalFactory.GetDal();
-
         static readonly BLImp instance = new BLImp();
         static BLImp() { }
         BLImp() { }
         public static BLImp Instance { get { return instance; } }
+
+        readonly DalApi.IDal dal = DalApi.DalFactory.GetDal();
+
 
         public int CalculateCommision(Order order)//
         {
@@ -167,17 +168,12 @@ namespace BL
         }
 
         public int PassedDays(DateTime first, DateTime second = default)//
-        {
-
-            int count = 0;
+        { 
             if (second == default(DateTime))
             {
                 second = DateTime.Now;
             }
-            for (int i = 1; first.AddDays(i) <= second; ++i)
-                count++;
-            return count;
-
+            return (second - first).Days;
         }
 
         public void SendEmail(GuestRequest guestRequest)
@@ -190,7 +186,14 @@ namespace BL
             var guestRequest = dal.RecieveGuesetRequest(order.Key);
             guestRequest.Status = Request_Statut.ORDERED;
             dal.UpdateGusetRequest(guestRequest);
-            var orders = dal.ordersList(x => x.CliendID == order.CliendID && x.Key != order.Key);
+            var orders = dal.ordersList(x => x.GuestRequestKey == order.GuestRequestKey&&x.Key!=order.Key);
+            foreach (var item in orders)
+            {
+                if (AbleToChangeOrderStatus(item))
+                {
+                    item.Status = Order_Status.IRRELEVANT;
+                }
+            }
             
         }
         
