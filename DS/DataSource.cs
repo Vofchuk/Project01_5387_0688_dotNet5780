@@ -48,7 +48,7 @@ namespace DS
             {
                 new Host()
                 {
-                    Id = 9898,
+                    HostID = 9898,
                     BankNumber = 11,
                     BranchNumber = 196,
                     BankAccuontNumber = 1111111,

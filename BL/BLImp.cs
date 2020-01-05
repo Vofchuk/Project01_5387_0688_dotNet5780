@@ -10,9 +10,15 @@ using DO;
 
 namespace BL
 {
-    class BLImp : IBl
+    sealed class  BLImp : IBl
     {
         readonly DalApi.IDal dal = DalApi.DalFactory.GetDal();
+
+        static readonly BLImp instance = new BLImp();
+        static BLImp() { }
+        BLImp() { }
+        public static BLImp Instance { get { return instance; } }
+
         public int CalculateCommision(Order order)//
         {
             GuestRequest guestRequest = dal.RecieveGuesetRequest(order.GuestRequestKey);
@@ -36,11 +42,11 @@ namespace BL
             GuestRequest temp = new GuestRequest() { EntryDate = date, ReleaseDate = end };
 
             var hostingUnit = from item in dal.hostingUnitsList(x => true)
-                             where IsAvailableGuestRequest(temp, item)
-                             select item;
+                              where IsAvailableGuestRequest(temp, item)
+                              select item;
             return hostingUnit;
         }
-       public bool IsOpenOrder(Order order)//
+        public bool IsOpenOrder(Order order)//
         {
 
             return order.Status != Order_Status.CLIENT_CLOSED && order.Status != Order_Status.IGNORED_CLOSED && order.Status != Order_Status.IRRELEVANT;
@@ -52,30 +58,32 @@ namespace BL
         /// </summary>
         /// <param name="hostingUnit"></param>
         /// <returns></returns>
-        public bool DeleteableHostingUnit(HostingUnit hostingUnit)
+        public bool DeleteableHostingUnit(HostingUnit hostingUnit)//
         {
             var orders = from item in dal.ordersList(x => x.HostingUnitKey == hostingUnit.Key)
                          where IsOpenOrder(item)
                          select item;
             return !orders.Any();//check if there is somthing in the orders
         }
-        public void CloseIrrelevantOrders(Order order)
+        public void CloseIrrelevantOrders(Order order)//
         {
             var orders = from item in dal.ordersList(x => x.Key != order.Key)
                          where item.GuestRequestKey == order.GuestRequestKey ||
-                         item.HostingUnitKey == order.HostingUnitKey && IsAvailableGuestRequest(dal.RecieveGuesetRequest(item.Key), dal.RecieveHostingUnit(item.HostingUnitKey))
+                         item.HostingUnitKey == order.HostingUnitKey && !IsAvailableGuestRequest(dal.RecieveGuesetRequest(item.Key), dal.RecieveHostingUnit(item.HostingUnitKey))
                          select item;
             foreach (var item in orders)
             {
-                item.Status = Order_Status.IRRELEVANT;
-                dal.UpdateOrder(item);
+                if (AbleToChangeOrderStatus(item))
+                {
+                    item.Status = Order_Status.IRRELEVANT;
+                    dal.UpdateOrder(item);
+                }
             }
         }
-        public bool DisableCollectionClearence(Host host)//
+        public bool AbleToChangeCollectionClearance(Host host)//
         {
-            var orders = dal.ordersList(x => x.HostID == host.Id);
-            bool flag = orders.Any(x => IsOpenOrder(x));
-            return !flag;
+            var orders = dal.ordersList(x => x.HostID == host.HostID).Where(x => IsOpenOrder(x));
+            return orders.Count() == 0;
         }
 
 
@@ -104,7 +112,7 @@ namespace BL
             throw new NotImplementedException();
         }
 
-        public bool IsAvailableGuestRequest(GuestRequest guestRequest, HostingUnit hostingUnit)
+        public bool IsAvailableGuestRequest(GuestRequest guestRequest, HostingUnit hostingUnit)//
         {
             DateTime temp = guestRequest.EntryDate;
             while (temp != guestRequest.ReleaseDate)
@@ -116,7 +124,7 @@ namespace BL
             return true;
         }
 
-        public void MarkDates(Order order)
+        public void MarkDates(Order order)//
         {
             GuestRequest guestRequest = dal.RecieveGuesetRequest(order.GuestRequestKey);
             HostingUnit hostingUnit = dal.RecieveHostingUnit(order.HostingUnitKey);
@@ -132,30 +140,30 @@ namespace BL
             CloseIrrelevantOrders(order);
         }
 
-        public List<GuestRequest> MatchingRequirment(Func<GuestRequest, bool> predicate)
+        public IEnumerable<GuestRequest> MatchingRequirment(Func<GuestRequest, bool> predicate)
         {
-            throw new NotImplementedException();
+            var guestRequest = dal.GuestRequestsList().Where(predicate);
+            return guestRequest;
+        }//
+
+        public int NumberOfInvitationsSent(GuestRequest guestRequest)//
+        {
+            return (dal.ordersList(x => x.GuestRequestKey == guestRequest.GuestRequestKey)).Count();
         }
 
-        public int NumberOfInvitationsSent(GuestRequest guestRequest)
+        public int NumberOfSentOrders(HostingUnit hostingUnit)//
         {
-            throw new NotImplementedException();
+           return dal.ordersList(x=> x.HostingUnitKey==hostingUnit.Key).Count();
         }
 
-        public int NumberOfOrders(HostingUnit hostingUnit, bool flag)
+        public bool AbleToChangeOrderStatus(Order order)//
         {
-
-            throw new NotImplementedException();
+            return order.Status != Order_Status.APPROVED;
         }
 
-        public void OrderClosed(Order order)
+        public IEnumerable<Order> OrdersCreated(int days)//
         {
-            throw new NotImplementedException();
-        }
-
-        public List<Order> OrdersCreated(int days)
-        {
-            throw new NotImplementedException();
+            return dal.ordersList(x => PassedDays(x.OrderDate) >= days);
         }
 
         public int PassedDays(DateTime first, DateTime second = default)//
@@ -174,12 +182,17 @@ namespace BL
 
         public void SendEmail(GuestRequest guestRequest)
         {
-            throw new NotImplementedException();
+            Console.WriteLine( guestRequest.ToString()+ "  send mail") ;
         }
 
         public void UpadateUserStatus(Order order)
         {
-            throw new NotImplementedException();
+            var guestRequest = dal.RecieveGuesetRequest(order.Key);
+            guestRequest.Status = Request_Statut.ORDERED;
+            dal.UpdateGusetRequest(guestRequest);
+            var orders = dal.ordersList(x => x.CliendID == order.CliendID && x.Key != order.Key);
+            
         }
+        
     }
 }

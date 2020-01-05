@@ -9,6 +9,7 @@ namespace DO
     public class Order
     {
         public int Key { get;  set; }
+        public int CliendID { get; set; }
         public int HostingUnitKey { get;  set; }
         public int HostID { get; set; }
         public int GuestRequestKey { get;  set; }

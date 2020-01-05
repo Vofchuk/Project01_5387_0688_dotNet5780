@@ -8,6 +8,7 @@ namespace DO
 {
     public  class GuestRequest
     {
+        public int ClientID { get; set; }
         public int GuestRequestKey { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

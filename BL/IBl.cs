@@ -14,17 +14,17 @@ namespace BlApi
         bool EmailPremissionCheck(Host host);
         //check that we dont have overlap
         bool IsAvailableGuestRequest(GuestRequest guestRequest, HostingUnit hostingUnit);
-        void OrderClosed(Order order);
+        bool AbleToChangeOrderStatus(Order order);
         int CalculateCommision(Order order);
         void MarkDates(Order order);
         void UpadateUserStatus(Order order);
         bool DeleteableHostingUnit(HostingUnit hostingUnit);
-        bool DisableCollectionClearence(Host host);
+        bool AbleToChangeCollectionClearance(Host host);
         void SendEmail(GuestRequest guestRequest);
         IEnumerable<HostingUnit> CheckForAvailableHostingUnit(DateTime  date, int days);
         int PassedDays(DateTime first, DateTime second = default(DateTime));
-        List<Order> OrdersCreated(int days);
-        List<GuestRequest> MatchingRequirment(Func<GuestRequest, bool> predicate);
+        IEnumerable<Order> OrdersCreated(int days);
+        IEnumerable<GuestRequest> MatchingRequirment(Func<GuestRequest, bool> predicate);
         int NumberOfInvitationsSent(GuestRequest guestRequest);
         /// <summary>
         /// 
@@ -35,7 +35,7 @@ namespace BlApi
         /// false for Closed invitaion 
         /// </param>
         /// <returns></returns>
-        int NumberOfOrders(HostingUnit hostingUnit, bool flag );
+        int NumberOfSentOrders(HostingUnit hostingUnit);
         void CloseIrrelevantOrders(Order order);
         List<GuestRequest> GuestRequestGroupedBySpecificArea(Location location);
         List<GuestRequest> GroupedByNumberOfGuests(int number);

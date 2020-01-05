@@ -18,9 +18,9 @@ namespace Dal
         public static DalObject Instance { get { return instance; } }
         public bool AddHost(Host host)//
         {
-            bool exist = DataSource.hosts.Any(x => host.Id == x.Id);
+            bool exist = DataSource.hosts.Any(x => host.HostID == x.HostID);
             if (exist)
-                throw new DuplicateIdException("Host", host.Id);
+                throw new DuplicateIdException("Host", host.HostID);
             Configuration.TotalHosts++;
             DataSource.hosts.Add(host.Clone());
             return exist;
@@ -68,9 +68,9 @@ namespace Dal
         }
         public void DeleteHost(Host host)//
         {
-            int count = DataSource.hosts.RemoveAll(x => host.Id == x.Id);
+            int count = DataSource.hosts.RemoveAll(x => host.HostID == x.HostID);
             if (count == 0)
-                throw new MissingIdException("Host", host.Id);
+                throw new MissingIdException("Host", host.HostID);
             host.Status = Status.INACTIVE;
             DataSource.hosts.Add(host.Clone());
         }
@@ -105,11 +105,11 @@ namespace Dal
         }
         public IEnumerable<HostingUnit> hostingUnitsList(Func<HostingUnit, bool> predicate)//
         {
-            return DataSource.hostingUnits.Where(predicate).Select(HU => (HostingUnit)HU.Clone());
+            return DataSource.hostingUnits.Where(predicate).Select(HU => HU.Clone());
         }
         public IEnumerable<Order> ordersList(Func<Order, bool> predicate)//
         {
-            return DataSource.orders.Where(predicate).Select(o => (Order)o.Clone());
+            return DataSource.orders.Where(predicate).Select(o => o.Clone());
         }
 
         public GuestRequest RecieveGuesetRequest(int key)//
@@ -120,7 +120,7 @@ namespace Dal
 
         public Host RecieveHost(int key)//
         {
-            Host h = DataSource.hosts.FirstOrDefault(x => x.Id == key);
+            Host h = DataSource.hosts.FirstOrDefault(x => x.HostID == key);
             return h == null ? throw new MissingIdException("Host", key) : h.Clone();
         }
 
@@ -153,9 +153,9 @@ namespace Dal
 
         public void UpdateHost(Host host)
         {
-            int count = DataSource.hosts.RemoveAll(x => x.Id == host.Id);
+            int count = DataSource.hosts.RemoveAll(x => x.HostID == host.HostID);
             if (count == 0)
-                throw new MissingIdException("Host", host.Id);
+                throw new MissingIdException("Host", host.HostID);
             DataSource.hosts.Add(host.Clone());
         }
 
